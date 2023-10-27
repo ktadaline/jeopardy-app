@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jeopardy Question Game</title>
+<!--    <link rel="stylesheet" href="/Static/styles.css">-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Jeopardy Question Game</h1>
+    <form method="POST" onsubmit="return false;">
+        {% if question %}
+        <p><strong>Category:</strong> {{ question.category.title.upper() }}</p>
+<!--        <p><strong>Category:</strong> {{ category_test }}</p>-->
+        <p><strong>Value:</strong> {{ question.value }}</p>
+        <p><strong>Question:</strong> {{ question.question }}</p>
+        <div class="answer">
+            <label for="answer"><strong>Your Answer: </strong></label>
+            <input type="text" name="answer" id="answer" value="{{ user_answer }}" required>
+        </div>
+        <input type="hidden" name="correct_answer" value="{{ question.answer }}">
+        <div class="button-group">
+            <input type="submit" value="Submit Answer" onclick="submitAnswer()">
+            <button type="button" id="newQuestionButton" onclick="getNewQuestion()">New Question</button>
+            <button type="button" onclick="showAnswer()">Show Answer</button>
+        </div>
+        {% endif %}
+    </form>
+    <p id="resultMessage"></p>
+    <p id="answerDisplay" style="display: none;"><strong>Correct Answer:</strong> {{ question.answer.upper() }}</p>
+    <script>
+        function submitAnswer() {
+            var userAnswer = document.getElementById("answer").value;
+            var correctAnswer = document.querySelector("input[name='correct_answer']").value;
+            var resultMessage = document.getElementById("resultMessage");
+
+            if (userAnswer.trim().toLowerCase() === correctAnswer.toLowerCase()) {
+                resultMessage.textContent = "Good job! Correct";
+            } else {
+                resultMessage.textContent = "Try again";
+            }
+        }
+    </script>
+    <script>
+        function getNewQuestion() {
+            window.location.href = "/new_question";
+        }
+    </script>
+    <script>
+        function showAnswer() {
+            var answerDisplay = document.getElementById("answerDisplay");
+            answerDisplay.style.display = "block";
+        }
+    </script>
+    <script>
+        document.getElementById("newQuestionButton").disabled = false;
+    </script>
+</body>
+</html>
+
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <title>Jeopardy Question Game</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <h1>Jeopardy Question Game</h1>-->
+<!--    <form method="POST" onsubmit="return false;">-->
+<!--        {% if question %}-->
+<!--        <p><strong>Category:</strong> {{ question.category.title }}</p>-->
+<!--        <p><strong>Value:</strong> {{ question.value }}</p>-->
+<!--        <p><strong>Question:</strong> {{ question.question }}</p>-->
+<!--        <label for="answer">Your Answer:</label>-->
+<!--        <input type="text" name="answer" id="answer" value="{{ user_answer }}" required>-->
+<!--        <input type="hidden" name="correct_answer" value="{{ question.answer }}">-->
+<!--        <input type="submit" value="Submit Answer" onclick="submitAnswer()">-->
+<!--        <button type="button" id="newQuestionButton" onclick="getNewQuestion()">New Question</button>-->
+<!--        <button type="button" onclick="showAnswer()">Show Answer</button>-->
+<!--        {% endif %}-->
+<!--    </form>-->
+<!--    <p>{{ result }}</p>-->
+<!--    <p id="answerDisplay" style="display: none;"><strong>Correct Answer:</strong> {{ question.answer }}</p>-->
+<!--    <script>-->
+<!--        function submitAnswer() {-->
+<!--            // Handle answer submission here-->
+<!--            // You can send the answer to the server if needed-->
+<!--            alert("Answer submitted"); // Replace this with your logic-->
+<!--            -->
+<!--        }-->
+<!--    </script>-->
+<!--    <script>-->
+<!--        function getNewQuestion() {-->
+<!--            window.location.href = "/new_question";-->
+<!--        }-->
+<!--    </script>-->
+<!--    <script>-->
+<!--        function showAnswer() {-->
+<!--            var answerDisplay = document.getElementById("answerDisplay");-->
+<!--            answerDisplay.style.display = "block";-->
+<!--        }-->
+<!--    </script>-->
+<!--    <script>-->
+<!--        document.getElementById("newQuestionButton").disabled = false;-->
+<!--    </script>-->
+<!--</body>-->
+<!--</html>-->
+
+<!--</head>-->
+<!--<body>-->
+<!--    <h1>Jeopardy Question Game</h1>-->
+<!--    <form method="POST">-->
+<!--        {% if question %}-->
+<!--        <p><strong>Category:</strong> {{ question.category.title }}</p>-->
+<!--        <p><strong>Value:</strong> {{ question.value }}</p>-->
+<!--        <p><strong>Question:</strong> {{ question.question }}</p>-->
+<!--        <label for="answer">Your Answer:</label>-->
+<!--        <input type="text" name="answer" id="answer" value="{{ user_answer }}" required>-->
+<!--        <input type="hidden" name="correct_answer" value="{{ question.answer }}">-->
+<!--        <input type="submit" value="Submit Answer">-->
+<!--        <button type="button" id="newQuestionButton" onclick="getNewQuestion()">New Question</button>-->
+<!--        <button type="button" onclick="showAnswer()">Show Answer</button>-->
+<!--        {% endif %}-->
+<!--    </form>-->
+<!--    <p>{{ result }}</p>-->
+<!--    <p id="answerDisplay" style="display: none;"><strong>Correct Answer:</strong> {{ question.answer }}</p>-->
+<!--    <script>-->
+<!--        function getNewQuestion() {-->
+<!--            window.location.href = "/new_question";-->
+<!--        }-->
+<!--    </script>-->
+<!--    <script>-->
+<!--        function showAnswer() {-->
+<!--            var answerDisplay = document.getElementById("answerDisplay");-->
+<!--            answerDisplay.style.display = "block";-->
+<!--        }-->
+<!--    </script>-->
+<!--    <script>-->
+<!--        document.getElementById("newQuestionButton").disabled = false;-->
+<!--    </script>-->
+<!--</body>-->
+<!--</html>-->
+
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <title>Jeopardy Question Game</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <h1>Jeopardy Question Game</h1>-->
+<!--    <form method="POST">-->
+<!--        {% if question %}-->
+<!--        <p><strong>Category:</strong> {{ question.category.title }}</p>-->
+<!--        <p><strong>Value:</strong> {{ question.value }}</p>-->
+<!--        <p><strong>Question:</strong> {{ question.question }}</p>-->
+<!--        <label for="answer">Your Answer:</label>-->
+<!--        <input type="text" name="answer" id="answer" value="{{ user_answer }}" required>-->
+<!--        <input type="hidden" name="correct_answer" value="{{ question.answer }}">-->
+<!--        <input type="submit" value="Submit Answer">-->
+<!--        <button type="button" onclick="showAnswer()">Show Answer</button>-->
+<!--        <form method="POST" action="/new_question">-->
+<!--            <button type="submit">New Question</button>-->
+<!--        </form>-->
+<!--        {% endif %}-->
+<!--    </form>-->
+<!--    <p>{{ result }}</p>-->
+<!--    <p id="answerDisplay" style="display: none;"><strong>Correct Answer:</strong> {{ question.answer }}</p>-->
+<!--    <script>-->
+<!--        function showAnswer() {-->
+<!--            var answerDisplay = document.getElementById("answerDisplay");-->
+<!--            answerDisplay.style.display = "block";-->
+<!--        }-->
+<!--    </script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <title>Jeopardy Question Game</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <h1>Jeopardy Question Game</h1>-->
+<!--    <form method="POST">-->
+<!--        <p><strong>Category:</strong> {{ question.category.title }}</p>-->
+<!--        <p><strong>Value:</strong> {{ question.value }}</p>-->
+<!--        <p><strong>Question:</strong> {{ question.question }}</p>-->
+<!--        <label for="answer">Your Answer:</label>-->
+<!--        <input type="text" name="answer" id="answer" value="{{ user_answer }}" required>-->
+<!--        <input type="submit" value="Submit Answer">-->
+<!--    </form>-->
+<!--    <p>{{ result }}</p>-->
+<!--</body>-->
+<!--</html>-->
