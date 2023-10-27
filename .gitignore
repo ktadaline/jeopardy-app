@@ -1,0 +1,39 @@
+# Python virtual environment
+venv/
+
+# Compiled Python files
+*.pyc
+
+# Editor/IDE-specific files
+.idea/
+.vscode/
+
+# Dependency files
+__pycache/
+
+# Compiled or build files
+*.pyo
+*.pyd
+__pycache__/
+__pycache__/*.
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Sensitive or private data
+*.env
+secrets.json
+
+# Compiled documentation
+__pycache__/
+docs/_build/
+
+# User-specific files
+*.suo
+*.user
+
+# Miscellaneous files
+*.bak
+*.swp
+*~
