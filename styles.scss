@@ -6,8 +6,12 @@ body {
 }
 
 h1 {
-    color: $primary-color;
     text-align: center;
+
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(255,95,219,1) 0%, rgba(255,223,93,1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 p {
