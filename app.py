@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, jsonify, render_template, request
 import requests
 
 app = Flask(__name__)
@@ -13,25 +13,27 @@ def get_random_jeopardy_question():
     else:
         return None
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/", methods=["GET"])
 def jeopardy_game():
     question = get_random_jeopardy_question()
     user_answer = ""
     result = ""
 
-    if request.method == "POST":
-        user_answer = request.form.get("answer", "").strip().lower()
-        correct_answer = request.form.get("correct_answer", "").strip().lower()
-
-        if user_answer == correct_answer:
-            result = "Correct!"
-
     return render_template("index.html", question=question, user_answer=user_answer, result=result)
 
-@app.route("/new_question", methods=["GET", "POST"])
-def new_question():
-    question = get_random_jeopardy_question()
-    return render_template("index.html", question=question, user_answer="", result="")
+@app.route("/check_answer", methods=["POST"])
+def check_answer():
+    data = request.json
+
+    user_answer = data.get("answer", "").strip().lower()
+    correct_answer = data.get("correct_answer", "").strip().lower()
+
+    if user_answer == correct_answer:
+        result = "Good job! Correct"
+    else:
+        result = "Try again"
+
+    return jsonify({"result": result})
 
 if __name__ == "__main__":
     app.run(debug=True)

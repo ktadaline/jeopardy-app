@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Jeopardy Question Game</h1>
-    <form method="POST" onsubmit="return false;">
+    <form id="jeopardyForm" method="POST" action="{{ url_for('check_answer') }}">
         {% if question %}
         <p><strong>Category:</strong> {{ question.category.title.upper() }}</p>
         <p><strong>Value:</strong> {{ question.value }}</p>
@@ -15,9 +15,10 @@
             <label for="answer"><strong>Your Answer: </strong></label>
             <input type="text" name="answer" id="answer" value="{{ user_answer }}" required>
         </div>
-        <input type="hidden" name="correct_answer" value="{{ question.answer }}">
+        <input type="hidden" name="correct_answer" id="correct_answer" value="{{ question.answer.upper() }}">
+
         <div class="button-group">
-            <input type="submit" value="Submit Answer" onclick="submitAnswer()">
+            <button type="button" id="submitBtn">Submit Answer</button>
             <button type="button" id="newQuestionButton" onclick="getNewQuestion()">New Question</button>
             <button type="button" onclick="showAnswer()">Show Answer</button>
         </div>
@@ -26,31 +27,48 @@
     <p id="resultMessage"></p>
     <p id="answerDisplay" style="display: none;"><strong>Correct Answer:</strong> {{ question.answer.upper() }}</p>
     <script>
-        function submitAnswer() {
-            var userAnswer = document.getElementById("answer").value;
-            var correctAnswer = document.querySelector("input[name='correct_answer']").value;
-            var resultMessage = document.getElementById("resultMessage");
-
-            if (userAnswer.trim().toLowerCase() === correctAnswer.toLowerCase()) {
-                resultMessage.textContent = "Good job! Correct";
-            } else {
-                resultMessage.textContent = "Try again";
-            }
-        }
-    </script>
-    <script>
         function getNewQuestion() {
-            window.location.href = "/new_question";
+            window.location.href = "/";
         }
-    </script>
-    <script>
+
         function showAnswer() {
             var answerDisplay = document.getElementById("answerDisplay");
             answerDisplay.style.display = "block";
         }
+
+         document.addEventListener('DOMContentLoaded', function() {
+                    var submitBtn = document.getElementById('submitBtn');
+                    var resultMessage = document.getElementById('resultMessage');
+                    var answerInput = document.getElementById('answer');
+                    var correctAnswer = document.getElementById('correct_answer').value;
+
+                    submitBtn.addEventListener('click', function(event) {
+                        event.preventDefault(); // Prevent the default button click behavior
+
+                        var data = {
+                            answer: encodeURIComponent(answerInput.value),
+                            correct_answer: encodeURIComponent(correctAnswer)
+                        };
+
+                        // Make an AJAX POST request to the backend
+                        fetch('{{ url_for("check_answer") }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(data),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Handle the response from the backend
+                            resultMessage.textContent = data.result;
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                    });
+                });
     </script>
-    <script>
-        document.getElementById("newQuestionButton").disabled = false;
-    </script>
+
 </body>
 </html>
